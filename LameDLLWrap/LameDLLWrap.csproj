@@ -5,6 +5,7 @@
     <AssemblyVersion></AssemblyVersion>
     <FileVersion></FileVersion>
     <Version>2.1.0</Version>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -16,6 +17,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NAudio.Core" Version="2.1.0" />
+    <ProjectReference Include="..\..\NAudio\NAudio.Core\NAudio.Core.csproj" />
   </ItemGroup>
 </Project>
