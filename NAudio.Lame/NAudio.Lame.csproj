@@ -8,6 +8,9 @@
     <Copyright>Copyright © 2013-2023 Corey Murtagh</Copyright>
     <Description>Uses libmp3lame.dll from the Lame project to provide MP3 encoding support to NAudio.  Both 64-bit and 32-bit versions of libmp3lame.dll are provided, with platform detection to determine which to use.</Description>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageId>Voicescript.NAudio.Lame</PackageId>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/voicescript/AutoScriptOneSpeechRecognition.git</RepositoryUrl>
   </PropertyGroup>
   
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
