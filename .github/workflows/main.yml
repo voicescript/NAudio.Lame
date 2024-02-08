@@ -12,7 +12,7 @@ on:
 
 jobs:
   ci:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     env:
       STORAGE: https://nuget.pkg.github.com/voicescript/index.json
@@ -30,6 +30,9 @@ jobs:
 
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1.1
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.5
 
     - name: Restore packages
       run: nuget restore NAudio.Lame.sln
