@@ -1,28 +1,27 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
-name: .NET
-
+name: .NET Core 2.2
 on:
   push:
-    branches: [ "main" ]
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+      - '**.nuspec'
+      - 'Lame.Test.Framework/**'
+      - '.git*'
+      - '!.git*/**.yml'
   workflow_dispatch:
-    
-jobs:
-  build:
 
-    runs-on: ubuntu-latest
+jobs:
+  ci:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        dnversion: ['3.1.x', '2.1.x']
     env:
       STORAGE: https://nuget.pkg.github.com/voicescript/index.json
       PACKAGE: Voicescript.NAudio.Lame
       
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
-        
+    
     - name: Auto Increment Semver Action
       uses: MCKanpolat/auto-semver-action@1.0.5
       id: versioning
@@ -30,13 +29,54 @@ jobs:
         releaseType: minor
         incrementPerCommit: false
         github_token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Check out repository
+      uses: actions/checkout@v3
+      
+    - name: Setup .NET Core ${{ matrix.dnversion }}
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ matrix.dnversion }}
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Setup VSTest
+      uses: darenm/Setup-VSTest@v1.2
+
+    - name: Restore packages
+      run: nuget restore NAudio.Lame.sln
+
+    - name: Build LameDLLWrap (Debug|x86)
+      run: dotnet build LameDLLWrap -c:Debug -p:Platform=x86
+      
+    - name: Build LameDLLWrap (Debug|x64)
+      run: dotnet build LameDLLWrap -c:Debug -p:Platform=x64
+      
+    - name: Build LameDLLWrap (Debug|AnyCPU)
+      run: dotnet build LameDLLWrap -c:Debug -p:Platform=AnyCPU
+      
+    - name: Build NAudio.Lame
+      run: dotnet build NAudio.Lame -c:Debug -p:Platform=AnyCPU
+      
+    - name: Build Lame.Test.Core
+      run: dotnet build Lame.Test.Core -c:Debug -p:Platform=AnyCPU
+      
+    - name: Run .NET Core tests
+      run: dotnet test Lame.Test.Core
+      
+    - name: Build Lame.Test.Framework
+      run: dotnet build Lame.Test.Framework -c:Debug -p:Platform=AnyCPU
+      
+    - name: Run Framework tests
+      run: vstest.console.exe Lame.Test.Framework\bin\Debug\Lame.Test.Framework.dll
+    
           
     - name: Restore dependencies
       run: dotnet restore
       
-    - name: Build & pack
+    - name: Pack
       run: |
-        dotnet build --no-restore
         dotnet pack --configuration Release /p:Version=${VERSION} --output .
       env:
         VERSION: ${{ steps.versioning.outputs.version }}
@@ -44,14 +84,8 @@ jobs:
     - name: Push
       run: dotnet nuget push $PACKAGE.${VERSION}.nupkg --source $STORAGE --api-key ${{ secrets.GITHUB_TOKEN }}
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         VERSION: ${{ steps.versioning.outputs.version }}
 
-    - name: Tag release
-      shell: bash
-      run: |
-          git tag ${{ steps.versioning.outputs.version }}
-          git push origin ${{ steps.versioning.outputs.version }}
-          echo "Pushed tag ${{ steps.versioning.outputs.version }}"
+    
 
       
