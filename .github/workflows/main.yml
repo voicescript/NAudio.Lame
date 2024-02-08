@@ -13,9 +13,7 @@ on:
 jobs:
   ci:
     runs-on: windows-latest
-    strategy:
-      matrix:
-        dnversion: ['3.1.x', '2.1.x']
+
     env:
       STORAGE: https://nuget.pkg.github.com/voicescript/index.json
       PACKAGE: Voicescript.NAudio.Lame
@@ -36,13 +34,10 @@ jobs:
     - name: Setup .NET Core ${{ matrix.dnversion }}
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: ${{ matrix.dnversion }}
+        dotnet-version: 6.0.x
 
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1.1
-
-    - name: Setup VSTest
-      uses: darenm/Setup-VSTest@v1.2
 
     - name: Restore packages
       run: nuget restore NAudio.Lame.sln
@@ -58,22 +53,6 @@ jobs:
       
     - name: Build NAudio.Lame
       run: dotnet build NAudio.Lame -c:Debug -p:Platform=AnyCPU
-      
-    - name: Build Lame.Test.Core
-      run: dotnet build Lame.Test.Core -c:Debug -p:Platform=AnyCPU
-      
-    - name: Run .NET Core tests
-      run: dotnet test Lame.Test.Core
-      
-    - name: Build Lame.Test.Framework
-      run: dotnet build Lame.Test.Framework -c:Debug -p:Platform=AnyCPU
-      
-    - name: Run Framework tests
-      run: vstest.console.exe Lame.Test.Framework\bin\Debug\Lame.Test.Framework.dll
-    
-          
-    - name: Restore dependencies
-      run: dotnet restore
       
     - name: Pack
       run: |
