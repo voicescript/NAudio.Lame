@@ -1,0 +1,56 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+    
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      STORAGE: https://nuget.pkg.github.com/voicescript/index.json
+      PACKAGE: Voicescript.NAudio.Lame
+      
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Auto Increment Semver Action
+      uses: MCKanpolat/auto-semver-action@1.0.5
+      id: versioning
+      with:
+        releaseType: minor
+        incrementPerCommit: false
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+          
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build & pack
+      run: |
+        dotnet build --no-restore
+        dotnet pack --configuration Release /p:Version=${VERSION} --output .
+      env:
+        VERSION: ${{ steps.versioning.outputs.version }}
+
+    - name: Push
+      run: dotnet nuget push $PACKAGE.${VERSION}.nupkg --source $STORAGE --api-key ${{ secrets.GITHUB_TOKEN }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        VERSION: ${{ steps.versioning.outputs.version }}
+
+    - name: Tag release
+      shell: bash
+      run: |
+          git tag ${{ steps.versioning.outputs.version }}
+          git push origin ${{ steps.versioning.outputs.version }}
+          echo "Pushed tag ${{ steps.versioning.outputs.version }}"
+
+      
