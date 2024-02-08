@@ -45,12 +45,12 @@ jobs:
       
     - name: Pack
       run: |
-        dotnet pack ./NAudio.Lame/NAudio.Lame.csproj -c Debug /p:Version=${VERSION} --output .
+        dotnet pack ./NAudio.Lame/NAudio.Lame.csproj -c Debug --output .
       env:
         VERSION: 2.1.0
 
     - name: Push
-      run: dotnet nuget push $PACKAGE.${VERSION}.nupkg --source $STORAGE --api-key ${{ secrets.GITHUB_TOKEN }}
+      run: dotnet nuget push $PACKAGE.2.1.0.nupkg --source $STORAGE --api-key ${{ secrets.GITHUB_TOKEN }}
       env:
         VERSION: 2.1.0
 
