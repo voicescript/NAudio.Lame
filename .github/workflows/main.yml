@@ -34,6 +34,10 @@ jobs:
     - name: Setup NuGet
       uses: NuGet/setup-nuget@v1.0.5
 
+    - name: Add nuget sources
+      run: |
+          nuget sources add -Name "GitHub" -Source "https://nuget.pkg.github.com/voicescript/index.json" -UserName voicescript -Password ${{ secrets.TOKEN }} -StorePasswordInClearText
+
     - name: Restore packages
       run: nuget restore NAudio.Lame.sln
 
