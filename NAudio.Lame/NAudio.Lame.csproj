@@ -40,7 +40,8 @@
     <PackageReference Include="ModuleInit.Fody" Version="2.1.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="NAudio.Core" Version="2.1.0" />
+    <PackageReference Include="Voicescript.NAudio" Version="2.2.1" />
+    <PackageReference Include="Voicescript.NAudio.Core" Version="2.2.1" />
   </ItemGroup>
 
   <ItemGroup>
