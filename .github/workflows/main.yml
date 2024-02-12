@@ -1,57 +1,74 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
-name: .NET
-
+name: .NET Core 2.2
 on:
   push:
-    branches: [ "main" ]
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+      - '**.nuspec'
+      - 'Lame.Test.Framework/**'
+      - '.git*'
+      - '!.git*/**.yml'
   workflow_dispatch:
-    
-jobs:
-  build:
 
-    runs-on: ubuntu-latest
+jobs:
+  ci:
+    runs-on: windows-latest
+
     env:
       STORAGE: https://nuget.pkg.github.com/voicescript/index.json
       PACKAGE: Voicescript.NAudio.Lame
       
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
-        
+
     - name: Auto Increment Semver Action
       uses: MCKanpolat/auto-semver-action@1.0.5
       id: versioning
       with:
-        releaseType: minor
+        releaseType: patch
         incrementPerCommit: false
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-          
-    - name: Restore dependencies
-      run: dotnet restore
+        github_token: ${{ secrets.TOKEN }}
+    
+    - name: Check out repository
+      uses: actions/checkout@v3
       
-    - name: Build & pack
+    - name: Setup .NET Core 6
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.5
+
+    - name: Add nuget sources
       run: |
-        dotnet build --no-restore
-        dotnet pack --configuration Release /p:Version=${VERSION} --output .
-      env:
-        VERSION: ${{ steps.versioning.outputs.version }}
+          nuget sources add -Name "GitHub" -Source "https://nuget.pkg.github.com/voicescript/index.json" -UserName voicescript -Password ${{ secrets.TOKEN }} -StorePasswordInClearText
+
+    - name: Restore packages
+      run: nuget restore NAudio.Lame.sln
+
+    - name: Build LameDLLWrap x86
+      run: dotnet build ./LameDLLWrap/LameDLLWrap.csproj -a x64 -o ./LameDLLWrap/bin/x64/Debug/netstandard2.0
+      
+    - name: Build LameDLLWrap x64
+      run: dotnet build ./LameDLLWrap/LameDLLWrap.csproj -a x86 -o ./LameDLLWrap/bin/x86/Debug/netstandard2.0
+      
+    - name: Pack
+      run: |
+        dotnet pack ./NAudio.Lame/NAudio.Lame.csproj -c Debug -p:PackageVersion=${{ steps.versioning.outputs.version }} --output .
 
     - name: Push
-      run: dotnet nuget push $PACKAGE.${VERSION}.nupkg --source $STORAGE --api-key ${{ secrets.GITHUB_TOKEN }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        VERSION: ${{ steps.versioning.outputs.version }}
+      run: dotnet nuget push Voicescript.NAudio.Lame.${{ steps.versioning.outputs.version }}.nupkg --source https://nuget.pkg.github.com/voicescript/index.json --api-key ${{ secrets.TOKEN }}
 
     - name: Tag release
       shell: bash
       run: |
-          git tag ${{ steps.versioning.outputs.version }}
-          git push origin ${{ steps.versioning.outputs.version }}
-          echo "Pushed tag ${{ steps.versioning.outputs.version }}"
+          git tag ${{steps.versioning.outputs.version}}
+          git push origin ${{steps.versioning.outputs.version}}
+          echo "Pushed tag ${{steps.versioning.outputs.version}}"
+
+    
 
       

@@ -8,17 +8,11 @@
     <Copyright>Copyright © 2013-2023 Corey Murtagh</Copyright>
     <Description>Uses libmp3lame.dll from the Lame project to provide MP3 encoding support to NAudio.  Both 64-bit and 32-bit versions of libmp3lame.dll are provided, with platform detection to determine which to use.</Description>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageId>Voicescript.NAudio.Lame</PackageId>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/voicescript/AutoScriptOneSpeechRecognition.git</RepositoryUrl>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
   </PropertyGroup>
-  
-  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
-    <EmbeddedResource Include="..\LameDLLWrap\bin\x86\Debug\netstandard2.0\LameDLLWrap.dll" Link="x86.LameDLLWrap.dll" />
-    <EmbeddedResource Include="..\LameDLLWrap\bin\x64\Debug\netstandard2.0\LameDLLWrap.dll" Link="x64.LameDLLWrap.dll" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <EmbeddedResource Include="..\LameDLLWrap\bin\x86\Release\netstandard2.0\LameDLLWrap.dll" Link="x86.LameDLLWrap.dll" />
-    <EmbeddedResource Include="..\LameDLLWrap\bin\x64\Release\netstandard2.0\LameDLLWrap.dll" Link="x64.LameDLLWrap.dll" />
-  </ItemGroup>
 
   <ItemGroup>
     <Content Include="libmp3lame.32.dll">
@@ -48,12 +42,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LameDLLWrap\LameDLLWrap.csproj">
-      <Private>false</Private>
-      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
-      <ExcludeAssets></ExcludeAssets>
-      <PrivateAssets>*.dll</PrivateAssets>
+    <ProjectReference Include="..\LameDLLWrap\LameDLLWrap.csproj" PrivateAssets="All" >
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <IncludeAssets>LameDLLWrap.dll</IncludeAssets>
     </ProjectReference>
   </ItemGroup>
+
+  <Target DependsOnTargets="ResolveReferences" Name="CopyProjectReferencesToPackage">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))"/>
+    </ItemGroup>
+  </Target>
 
 </Project>
