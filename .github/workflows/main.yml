@@ -49,14 +49,14 @@ jobs:
       
     - name: Pack
       run: |
-        dotnet pack ./NAudio.Lame/NAudio.Lame.csproj -c Debug --output .
+        dotnet pack ./NAudio.Lame/NAudio.Lame.csproj -c Debug -p:PackageVersion=2.0.1 --output .
       env:
-        VERSION: 2.1.0
+        VERSION: 2.0.1
 
     - name: Push
       run: dotnet nuget push Voicescript.NAudio.Lame.2.0.1.nupkg --source https://nuget.pkg.github.com/voicescript/index.json --api-key ${{ secrets.TOKEN }}
       env:
-        VERSION: 2.1.0
+        VERSION: 2.0.1
 
     
 
