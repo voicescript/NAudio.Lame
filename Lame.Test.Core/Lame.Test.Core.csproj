@@ -46,7 +46,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NAudio" Version="2.1.0" />
+    <PackageReference Include="Voicescript.NAudio" Version="2.2.1" />
+    <PackageReference Include="Voicescript.NAudio.Core" Version="2.2.1" />
   </ItemGroup>
 
   <ItemGroup>
