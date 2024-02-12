@@ -54,7 +54,7 @@ jobs:
         VERSION: 2.1.0
 
     - name: Push
-      run: dotnet nuget push Voicescript.NAudio.Lame.2.1.0.nupkg --source https://nuget.pkg.github.com/voicescript/index.json --api-key ${{ secrets.TOKEN }}
+      run: dotnet nuget push Voicescript.NAudio.Lame.2.0.1.nupkg --source https://nuget.pkg.github.com/voicescript/index.json --api-key ${{ secrets.TOKEN }}
       env:
         VERSION: 2.1.0
 
