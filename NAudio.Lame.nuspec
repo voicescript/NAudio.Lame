@@ -23,8 +23,8 @@
     <file src=".\NAudio.Lame\libmp3lame.32.dll" target="build\libmp3lame.32.dll" />
     <file src=".\NAudio.Lame\libmp3lame.64.dll" target="build\libmp3lame.64.dll" />
     <file src=".\NAudio.Lame.targets" target="build\NAudio.Lame.targets" />
-    <file src=".\NAudio.Lame\bin\Release\netstandard2.0\NAudio.Lame.dll" target="lib\netstandard2.0\NAudio.Lame.dll" />
-    <file src=".\NAudio.Lame\bin\Release\netstandard2.0\NAudio.Lame.pdb" target="lib\netstandard2.0\NAudio.Lame.pdb" />
+    <file src=".\NAudio.Lame\bin\Debug\netstandard2.0\NAudio.Lame.dll" target="lib\netstandard2.0\NAudio.Lame.dll" />
+    <file src=".\NAudio.Lame\bin\Debug\netstandard2.0\NAudio.Lame.pdb" target="lib\netstandard2.0\NAudio.Lame.pdb" />
     <file src="LICENSE.txt" target="LICENSE.txt" />
   </files>
 </package>
