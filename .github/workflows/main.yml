@@ -49,18 +49,21 @@ jobs:
     - name: Restore packages
       run: nuget restore NAudio.Lame.sln
 
-    - name: Build LameDLLWrap x86
-      run: dotnet build ./LameDLLWrap/LameDLLWrap.csproj -c:Debug -a x64 -o ./LameDLLWrap/bin/x64/Debug/netstandard2.0
+    - name: Build LameDLLWrap (Debug|x86)
+      run: dotnet build LameDLLWrap -c:Debug -p:Platform=x86
       
-    - name: Build LameDLLWrap x64
-      run: dotnet build ./LameDLLWrap/LameDLLWrap.csproj -c:Debug -a x86 -o ./LameDLLWrap/bin/x86/Debug/netstandard2.0
-
-    - name: Build LameDLLWrap AnyCPU
-      run: dotnet build ./LameDLLWrap/LameDLLWrap.csproj -c:Debug -a AnyCPU -o ./LameDLLWrap/bin/x86/Debug/netstandard2.0
+    - name: Build LameDLLWrap (Debug|x64)
+      run: dotnet build LameDLLWrap -c:Debug -p:Platform=x64
       
+    - name: Build LameDLLWrap (Debug|AnyCPU)
+      run: dotnet build LameDLLWrap -c:Debug -p:Platform=AnyCPU
+      
+    - name: Build NAudio.Lame
+      run: dotnet build NAudio.Lame -c:Debug -p:Platform=AnyCPU
+    
     - name: Pack
       run: |
-        dotnet pack ./NAudio.Lame/NAudio.Lame.csproj -c Debug -p:PackageVersion=${{ steps.versioning.outputs.version }} --output .
+        nuget pack NAudio.Lame.2.1.9.nuspec -Version ${{ steps.versioning.outputs.version }} -OutputDirectory .
 
     - name: Push
       run: dotnet nuget push Voicescript.NAudio.Lame.${{ steps.versioning.outputs.version }}.nupkg --source https://nuget.pkg.github.com/voicescript/index.json --api-key ${{ secrets.TOKEN }}
