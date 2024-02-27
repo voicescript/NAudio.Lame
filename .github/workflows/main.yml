@@ -50,10 +50,13 @@ jobs:
       run: nuget restore NAudio.Lame.sln
 
     - name: Build LameDLLWrap x86
-      run: dotnet build ./LameDLLWrap/LameDLLWrap.csproj -a x64 -o ./LameDLLWrap/bin/x64/Debug/netstandard2.0
+      run: dotnet build ./LameDLLWrap/LameDLLWrap.csproj -c:Debug -a x64 -o ./LameDLLWrap/bin/x64/Debug/netstandard2.0
       
     - name: Build LameDLLWrap x64
-      run: dotnet build ./LameDLLWrap/LameDLLWrap.csproj -a x86 -o ./LameDLLWrap/bin/x86/Debug/netstandard2.0
+      run: dotnet build ./LameDLLWrap/LameDLLWrap.csproj -c:Debug -a x86 -o ./LameDLLWrap/bin/x86/Debug/netstandard2.0
+
+    - name: Build LameDLLWrap AnyCPU
+      run: dotnet build ./LameDLLWrap/LameDLLWrap.csproj -c:Debug -a AnyCPU -o ./LameDLLWrap/bin/x86/Debug/netstandard2.0
       
     - name: Pack
       run: |
