@@ -24,7 +24,7 @@
       <Pack>True</Pack>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="NAudio.Lame.targets" Pack="true" PackagePath="build\">
+    <Content Include="..\NAudio.Lame.targets" PackagePath="build\">
       <Pack>True</Pack>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
