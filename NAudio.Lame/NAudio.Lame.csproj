@@ -12,6 +12,7 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/voicescript/AutoScriptOneSpeechRecognition.git</RepositoryUrl>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
@@ -45,7 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LameDLLWrap\LameDLLWrap.csproj" PrivateAssets="All" >
+    <ProjectReference Include="..\LameDLLWrap\LameDLLWrap.csproj" PrivateAssets="All">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
       <IncludeAssets>LameDLLWrap.dll</IncludeAssets>
     </ProjectReference>
@@ -53,7 +54,7 @@
 
   <Target DependsOnTargets="ResolveReferences" Name="CopyProjectReferencesToPackage">
     <ItemGroup>
-      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))"/>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
     </ItemGroup>
   </Target>
 
