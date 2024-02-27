@@ -16,11 +16,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="libmp3lame.32.dll" Pack="true" PackagePath="lib\$(TargetFramework)">
+    <Content Include="libmp3lame.32.dll" Pack="true" PackagePath="build\">
       <Pack>True</Pack>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="libmp3lame.64.dll" Pack="true" PackagePath="lib\$(TargetFramework)">
+    <Content Include="libmp3lame.64.dll" Pack="true" PackagePath="build\">
+      <Pack>True</Pack>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NAudio.Lame.targets" Pack="true" PackagePath="build\">
       <Pack>True</Pack>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
