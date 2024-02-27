@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>NAudio.Lame</id>
+    <id>Voicescript.NAudio.Lame</id>
     <version>2.1.0</version>
     <authors>Corey Murtagh</authors>
     <owners>Corey Murtagh</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE.txt</license>
-    <projectUrl>https://github.com/Corey-M/NAudio.Lame</projectUrl>
+    <projectUrl>https://github.com/voicescript/NAudio.Lame</projectUrl>
     <description>Uses libmp3lame.dll from the Lame project to provide MP3 encoding support to NAudio 2.0.  Both 64-bit and 32-bit versions of libmp3lame.dll are provided, with platform detection to determine which to use.</description>
     <summary>Implements MP3 writing for NAudio using libmp3lame.</summary>
     <releaseNotes></releaseNotes>
     <copyright>Copyright (c) 2013-2022 Corey Murtagh</copyright>
     <language>en-AU</language>
     <tags>C# NAudio MP3 Lame Windows</tags>
-    <repository type="git" url="https://github.com/Corey-M/NAudio.Lame" />
+    <repository type="git" url="https://github.com/voicescript/NAudio.Lame" />
     <dependencies>
       <dependency id="NAudio.Core" version="2.1.0" />
     </dependencies>
