@@ -42,6 +42,16 @@
     <PackageReference Include="Voicescript.NAudio.Core" Version="2.2.1" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <EmbeddedResource Include="..\LameDLLWrap\bin\x86\Debug\netstandard2.0\LameDLLWrap.dll" Link="x86.LameDLLWrap.dll" />
+    <EmbeddedResource Include="..\LameDLLWrap\bin\x64\Debug\netstandard2.0\LameDLLWrap.dll" Link="x64.LameDLLWrap.dll" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <EmbeddedResource Include="..\LameDLLWrap\bin\x86\Release\netstandard2.0\LameDLLWrap.dll" Link="x86.LameDLLWrap.dll" />
+    <EmbeddedResource Include="..\LameDLLWrap\bin\x64\Release\netstandard2.0\LameDLLWrap.dll" Link="x64.LameDLLWrap.dll" />
+  </ItemGroup>
+
   <ItemGroup>
     <None Include="..\LICENSE.txt">
       <Pack>True</Pack>
