@@ -63,7 +63,7 @@ jobs:
     
     - name: Pack
       run: |
-        nuget pack ..\NAudio.Lame.nuspec -Version ${{ steps.versioning.outputs.version }} -OutputDirectory .
+        nuget pack NAudio.Lame.nuspec -Version ${{ steps.versioning.outputs.version }} -OutputDirectory .
 
     - name: Push
       run: dotnet nuget push Voicescript.NAudio.Lame.${{ steps.versioning.outputs.version }}.nupkg --source https://nuget.pkg.github.com/voicescript/index.json --api-key ${{ secrets.TOKEN }}
