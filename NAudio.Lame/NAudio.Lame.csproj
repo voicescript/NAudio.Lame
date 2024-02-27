@@ -15,33 +15,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="libmp3lame.32.dll" Pack="true" PackagePath="build\">
-      <Pack>True</Pack>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="libmp3lame.64.dll" Pack="true" PackagePath="build\">
-      <Pack>True</Pack>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\NAudio.Lame.targets" PackagePath="build\">
-      <Pack>True</Pack>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Fody" Version="6.3.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="ModuleInit.Fody" Version="2.1.1">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Voicescript.NAudio" Version="2.2.1" />
-    <PackageReference Include="Voicescript.NAudio.Core" Version="2.2.1" />
-  </ItemGroup>
-
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
     <EmbeddedResource Include="..\LameDLLWrap\bin\x86\Debug\netstandard2.0\LameDLLWrap.dll" Link="x86.LameDLLWrap.dll" />
     <EmbeddedResource Include="..\LameDLLWrap\bin\x64\Debug\netstandard2.0\LameDLLWrap.dll" Link="x64.LameDLLWrap.dll" />
@@ -53,6 +26,26 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="libmp3lame.32.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libmp3lame.64.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fody" Version="6.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="ModuleInit.Fody" Version="2.1.1">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="NAudio.Core" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\LICENSE.txt">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
@@ -60,16 +53,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LameDLLWrap\LameDLLWrap.csproj" PrivateAssets="All">
-      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
-      <IncludeAssets>LameDLLWrap.dll</IncludeAssets>
+    <ProjectReference Include="..\LameDLLWrap\LameDLLWrap.csproj">
+      <Private>false</Private>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <ExcludeAssets></ExcludeAssets>
+      <PrivateAssets>*.dll</PrivateAssets>
     </ProjectReference>
   </ItemGroup>
-
-  <Target DependsOnTargets="ResolveReferences" Name="CopyProjectReferencesToPackage">
-    <ItemGroup>
-      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
-    </ItemGroup>
-  </Target>
 
 </Project>
