@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Voicescript.NAudio" Version="2.2.1" />
-    <PackageReference Include="Voicescript.NAudio.Core" Version="2.2.1" />
+    <PackageReference Include="Voicescript.NAudio" Version="2.2.4" />
+    <PackageReference Include="Voicescript.NAudio.Core" Version="2.2.4" />
   </ItemGroup>
 </Project>
