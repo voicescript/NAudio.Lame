@@ -16,7 +16,7 @@
     <tags>C# NAudio MP3 Lame Windows</tags>
     <repository type="git" url="https://github.com/voicescript/NAudio.Lame" />
     <dependencies>
-      <dependency id="Voicescript.NAudio.Core" version="2.2.5" />
+      <dependency id="Voicescript.NAudio.Core" version="2.2.6" />
     </dependencies>
   </metadata>
   <files>
